@@ -58,6 +58,7 @@ export default function WidthProvider<Config>(
     };
 
     mounted: boolean = false;
+    firstLoad: boolean = true;
 
     componentDidMount() {
       this.mounted = true;
@@ -84,6 +85,12 @@ export default function WidthProvider<Config>(
 
     render() {
       const { measureBeforeMount, ...rest } = this.props;
+      if (this.firstLoad) {
+        setTimeout(function () {
+          this.onWindowResize();
+        }, 500)
+        this.firstLoad = false;
+      }
       if (measureBeforeMount && !this.mounted) {
         return (
           <div className={this.props.className} style={this.props.style} />
